@@ -1,0 +1,16 @@
+{
+    "type": "module",
+    "scripts": {
+        "rerun": "npx electron electron-launcher.cjs"
+    },
+    "dependencies": {
+        "@vue/compiler-sfc": "^3.5.13",
+        "esbuild": "^0.25.2",
+        "esbuild-plugin-alias": "^0.2.1",
+        "esbuild-plugin-vue": "^0.2.4",
+        "vue": "^3.5.13"
+    },
+    "devDependencies": {
+        "electron": "^35.1.5"
+    }
+}

@@ -1,0 +1,4 @@
+.funky-temp/
+node_modules/
+dist/
+*.log

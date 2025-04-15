@@ -1,0 +1,16 @@
+<template>
+    <div style="color: lime">🎉 IT WORKED 🎉</div>
+    <div>Percentage {{ Math.trunc(pct * 100) }}%</div>
+    <button @click="updatePct">add</button>
+    <div>Click Count = {{ cnt }}</div>
+</template>
+
+<script>
+    const cnt = ref(0);
+    const pct = ref(0);
+
+    function updatePct() {
+        pct.value += 0.1;
+        cnt.value += 1;
+    }
+</script>
