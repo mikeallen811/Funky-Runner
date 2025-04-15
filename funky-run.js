@@ -9,6 +9,7 @@ import { dirname } from 'path'
 // get __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
+
 function logHead(header, message) {
     console.log(`\n====== ${header} ======\n`)
     console.log(message)
@@ -28,14 +29,17 @@ const scriptMatch = content.match(/<script>([\s\S]*?)<\/script>/)
 const template = templateMatch?.[1]?.trim() ?? ''
 const script = scriptMatch?.[1]?.trim() ?? ''
 
-//const scriptVars = Array.from(script.matchAll(/const\s+(\w+)/g)).map(m => m[1]).join(', ')
+const styleMatch = content.match(/<style>([\s\S]*?)<\/style>/)
+const styles = styleMatch?.[1]?.trim() ?? ''
+
 const scriptVars = Array.from(script.matchAll(/(?:const|function)\s+(\w+)/g)).map(m => m[1]).join(', ')
-
-
-logHead("EXTRACTED VARS", scriptVars)
 
 writeFileSync(`${outDir}/main.js`, `
     import { createApp, ref } from 'vue'
+    import 'vuetify/styles'
+    import { createVuetify } from 'vuetify'
+    import * as components from 'vuetify/components'
+    import * as directives from 'vuetify/directives'
 
     const App = {
         setup() {
@@ -45,11 +49,16 @@ writeFileSync(`${outDir}/main.js`, `
         template: ${JSON.stringify(template)}
     }
 
-    createApp(App).mount('#app')
-`)
+    const vuetify = createVuetify({
+        components,
+        directives,
+        theme: {
+            defaultTheme: 'dark',
+        }
+    })
 
-logHead("TEMPLATE", template)
-logHead("SCRIPT", script)
+    createApp(App).use(vuetify).mount('#app')
+`)
 
 await build({
     entryPoints: [`${outDir}/main.js`],
@@ -72,26 +81,19 @@ await build({
     ]    
 })
 
-console.log('\n====== MAIN.JS OUTPUT ======\n')
-console.log(readFileSync(`${outDir}/main.js`, 'utf8'))
-
 writeFileSync(`${outDir}/index.html`, `
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>Funky Runner</title>
+        <link href="https://cdn.jsdelivr.net/npm/vuetify@3.5.13/dist/vuetify.min.css" rel="stylesheet" />
         <style>
-            html, body {
-                color: #eee;
-                background: #222;
-                padding: 2em;
-                margin: 0;
-            }
+            ${styles}
         </style>
     </head>
     <body>
-        <div id="app">[Mounting Vue]</div>
+        <div id="app"></div>
         <script type="module" src="./app.js"></script>
     </body>
     </html>
@@ -99,5 +101,9 @@ writeFileSync(`${outDir}/index.html`, `
 
 spawn('npx electron electron-launcher.cjs', {
     stdio: 'inherit',
-    shell: true
+    shell: true,
+    env: {
+        ...process.env,
+        FUNKY_TITLE: 'some value',
+    }
 })

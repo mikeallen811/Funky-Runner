@@ -8,7 +8,11 @@
         "esbuild": "^0.25.2",
         "esbuild-plugin-alias": "^0.2.1",
         "esbuild-plugin-vue": "^0.2.4",
-        "vue": "^3.5.13"
+        "sass": "^1.86.3",
+        "sass-loader": "^16.0.5",
+        "vue": "^3.5.13",
+        "vue-router": "^4.5.0",
+        "vuetify": "3.0"
     },
     "devDependencies": {
         "electron": "^35.1.5"

@@ -13,10 +13,11 @@ app.whenReady().then(() => {
         webPreferences: {
             nodeIntegration: true, // 🟢 Enable Node.js integration
             devTools: true  // 🟢 Ensure dev tools are enabled
-        }
+        },
     })
 
-    win.webContents.openDevTools()
+    win.setMenu(null) // 🟢 Remove the menu bar
+    win.setTitle('Funky Runner v.1') // 🟢 Set the window title
 
     const indexPath = path.join(__dirname, '.funky-temp', 'index.html')
     win.loadFile(indexPath)
