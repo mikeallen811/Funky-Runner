@@ -7,15 +7,24 @@
 </window>
 
 <template>
-    <v-app>
-        <v-app-bar>things</v-app-bar>
-        <div style="color: lime">🎉 IT WORKED 🎉</div>
-        <div>Percentage {{ Math.trunc(pct * 100) }}%</div>
-        <v-btn @click="updatePct">add</v-btn>
-        <v-text-field v-model="txt" />
-        <div>Click Count = {{ cnt }}</div>
-        <v-btn @click="repeat">repeat</v-btn>
-    </v-app>
+    <v-card class="ma-20">
+        <v-card-title>
+            <div style="color: lime">🎉 IT WORKED 🎉</div>
+        </v-card-title>
+        <v-card-body>
+            <div>Percentage {{ Math.trunc(pct * 100) }}%</div>
+            <div>Click Count = {{ cnt }}</div>
+            <v-text-field v-model="txt" />
+        </v-card-body>
+        <v-card-actions>
+            <v-btn color="lime" variant="flat" @click="update">Add 10%</v-btn>
+            <v-btn color="lime" variant="flat" @click="alert">Alert Text</v-btn>
+        </v-card-actions>
+    </v-card>
+    <br/>
+    <v-card>
+        Text entered: {{ txt }}
+    </v-card>
 </template>
 
 <script>
@@ -23,12 +32,12 @@
     const pct = ref(0);
     const txt = ref("");
 
-    function updatePct() {
+    function update() {
         pct.value += 0.1;
         cnt.value += 1;
     }
 
-    function repeat() {
+    function alert() {
         alert('entered: ' + txt.value);
     }
 </script>
@@ -37,8 +46,8 @@
     html, body {
         color: #eee;
         background: #222;
-        margin: 0; 
+        margin: 20px; 
         padding: 0;
-        overflow: none;
+        overflow: hidden;
     }
 </style>

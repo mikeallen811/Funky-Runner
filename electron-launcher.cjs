@@ -7,6 +7,10 @@ const defaultConfig = {
     width: 800,
     height: 600,
     title: 'default',
+    showMenuBar: false,
+    minimizable: false,
+    maximizable: false,
+    resizable: false,
     webPreferences: {
         contextIsolation: false,
         nodeIntegration: true

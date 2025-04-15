@@ -4,7 +4,11 @@ import { build } from 'esbuild'
 import { spawn } from 'child_process'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
+import { createRequire } from 'module';
 import alias from 'esbuild-plugin-alias'
+
+const require = createRequire(import.meta.url);
+const electronPath = require('electron');
 
 // get __dirname in ESM
 const __filename = fileURLToPath(import.meta.url)
@@ -105,12 +109,7 @@ writeFileSync(`${outDir}/index.html`, `
 
 const configBase64 = Buffer.from(window).toString('base64');
 
-spawn('npx', ['electron', launcherPath, configBase64], {
+spawn(electronPath, [launcherPath, configBase64], {
     stdio: 'inherit',
-    shell: true
+    shell: false
 });
-
-// spawn('npx electron electron-launcher.cjs', {
-//     stdio: 'inherit',
-//     shell: true,
-// })
